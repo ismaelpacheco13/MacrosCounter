@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">MacrosCounter</string>
-    <string name="login_dont_have_account">¿Aún no tienes una cuenta?</string>
-    <string name="but_register">Registrate</string>
-    <string name="hint_email">Correo electrónico</string>
-    <string name="hint_password">Contraseña</string>
-    <string name="but_login">Iniciar Sesión</string>
-</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1037063198068",
+    "project_id": "macroscounter-7fe95",
+    "storage_bucket": "macroscounter-7fe95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037063198068:android:422488148a66fff079c821",
+        "android_client_info": {
+          "package_name": "com.ismael.macroscounter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037063198068-rnjtuaqb0gn7bbcnu6hrclc1c0erdkiv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-0NaUm5YhEMjKIpU0cWjAqmaCJBpfiws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037063198068-rnjtuaqb0gn7bbcnu6hrclc1c0erdkiv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

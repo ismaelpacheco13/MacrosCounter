@@ -2,8 +2,9 @@
     <string name="app_name">MacrosCounter</string>
     <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="login_dont_have_account">You dont have an account?</string>
-    <string name="but_register">Sign Up</string>
+    <string name="but_register">Registrarse</string>
     <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
-    <string name="but_login">Login</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="but_login">Iniciar Sesión</string>
+    <string name="hint_foodName">Nombre</string>
 </resources>
