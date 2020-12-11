@@ -1,12 +1,14 @@
 package com.ismael.macroscounter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -86,6 +88,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.statusBarColor));
+        }
 
         // Inicio de Firebase
         FirebaseApp.initializeApp(this);
@@ -369,18 +375,17 @@ public class HomeActivity extends AppCompatActivity {
         actualProtein = actualBreakfastProtein + actualLunchProtein + actualDinnerProtein;
         actualCarbs = actualBreakfastCarbs + actualLunchCarbs + actualDinnerCarbs;
         actualFats = actualBreakfastFats + actualLunchFats + actualDinnerFats;
-        Log.i("setting", Integer.toString(actualKcal));
 
         if (setting != null) {
-            kcalTextView.setText(actualKcal + " / " + (Integer.toString(setting.getKcal())));
-            proteinTextView.setText(actualProtein + " / " + (Integer.toString(setting.getProtein())));
-            carbsTextView.setText(actualCarbs + " / " + (Integer.toString(setting.getCarbs())));
-            fatsTextView.setText(actualFats + " / " + (Integer.toString(setting.getFats())));
+            kcalTextView.setText(actualKcal + " / " + (Integer.toString(setting.getKcal())) + " kcal");
+            proteinTextView.setText(actualProtein + " / " + (Integer.toString(setting.getProtein())) + " gr");
+            carbsTextView.setText(actualCarbs + " / " + (Integer.toString(setting.getCarbs())) + " gr");
+            fatsTextView.setText(actualFats + " / " + (Integer.toString(setting.getFats())) + " gr");
         } else {
-            kcalTextView.setText(actualKcal + " / 0");
-            proteinTextView.setText(actualProtein + " / 0");
-            carbsTextView.setText(actualCarbs + " / 0");
-            fatsTextView.setText(actualFats + " / 0");
+            kcalTextView.setText(actualKcal + " / 0 kcal");
+            proteinTextView.setText(actualProtein + " / 0 gr");
+            carbsTextView.setText(actualCarbs + " / 0 gr");
+            fatsTextView.setText(actualFats + " / 0 gr");
         }
 
 

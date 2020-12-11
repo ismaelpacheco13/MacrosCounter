@@ -7,16 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
+    android:background="@color/backgroundAppColor"
     tools:context=".HomeActivity">
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Lista de comidas"
-        android:textAlignment="center"
-        android:textSize="24dp" />
 
     <TextView
         android:id="@+id/kcalTextView"
