@@ -8,13 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,9 +34,12 @@ import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private String email = "";
+    private String email;
 
     private AlertDialog.Builder madb;
+    private AlertDialog.Builder madb2;
+
+    private TextView textView2;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -46,12 +54,12 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Food> dinnerList = new ArrayList<>();
     ArrayAdapter<Food> arrayAdapterFood;
 
+    private Food foodSelected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        setup();
 
         // Inicio de Firebase
         FirebaseApp.initializeApp(this);
@@ -59,11 +67,45 @@ public class HomeActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
+        textView2 = findViewById(R.id.textView2);
+
+        getUserInfo();
+
         breakfastListV = findViewById(R.id.breakfastListV);
         lunchListV = findViewById(R.id.lunchListV);
         dinnerListV = findViewById(R.id.dinnerListV);
 
         list();
+
+        breakfastListV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                foodSelected = (Food) parent.getItemAtPosition(position);
+
+                createFoodInfoDialog(foodSelected);
+
+            }
+        });
+
+        lunchListV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                foodSelected = (Food) parent.getItemAtPosition(position);
+
+                createFoodInfoDialog(foodSelected);
+
+            }
+        });
+
+        dinnerListV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                foodSelected = (Food) parent.getItemAtPosition(position);
+
+                createFoodInfoDialog(foodSelected);
+
+            }
+        });
     }
 
     private void list() {
@@ -124,9 +166,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setup() {
         setTitle("Macros Counter");
-        Intent i = getIntent();
-        Bundle bundle = i.getExtras();
-        email = bundle.getString("email");
 
         // Cuadro de diálogo cierre de sesión
         madb = new AlertDialog.Builder(this);
@@ -142,6 +181,45 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void createFoodInfoDialog(final Food foodSelected) {
+        // Cuadro de diálogo información comida seleccionada
+        madb2 = new AlertDialog.Builder(HomeActivity.this);
+        madb2.setTitle(foodSelected.getNombre());
+        madb2.setMessage(Html.fromHtml("Gr / Ml: " + foodSelected.getGrMl() + " gr / ml<br>"
+                + "Kcal: " + foodSelected.getKcal() + " kcal<br>"
+                + "Proteinas: " + foodSelected.getProtein() + " gr<br>"
+                + "Carbohidratos: " + foodSelected.getCarbs() + " gr<br>"
+                + "Grasas: " + foodSelected.getFats() + " gr<br>"));
+        // Para que la ventana desaparezca al pulsar fuera de ella
+        madb2.setCancelable(true | false);
+        // Se crea el boton de aceptar del diálogo
+        madb2.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(HomeActivity.this, EditActivity.class);
+                intent.putExtra("id", foodSelected.getId());
+                intent.putExtra("foodName", foodSelected.getNombre());
+                intent.putExtra("timeOfEating", foodSelected.getTimeOfEating());
+                intent.putExtra("grMl", foodSelected.getGrMl());
+                intent.putExtra("kcal", foodSelected.getKcal());
+                intent.putExtra("protein", foodSelected.getProtein());
+                intent.putExtra("carbs", foodSelected.getCarbs());
+                intent.putExtra("fats", foodSelected.getFats());
+                startActivity(intent);
+            }
+        });
+
+        madb2.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        madb2.create();
+        madb2.show();
     }
 
     @Override
@@ -167,6 +245,32 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Setup
+    private void getUserInfo() {
+        // Obtenemos el id del usuario con el que iniciamos sesión
+        String id = mAuth.getCurrentUser().getUid();
+        databaseReference.child("User").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    email = snapshot.child("email").getValue().toString();
+                    setup();
+                } else {
+                    setup();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
 
 }

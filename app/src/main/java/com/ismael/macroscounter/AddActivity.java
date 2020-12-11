@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,6 +27,7 @@ public class AddActivity extends AppCompatActivity {
 
     private Button saveButton;
     private EditText foodNameEditText;
+    private EditText grMlEditText;
     private EditText kcalEditText;
     private EditText proteinEditText;
     private EditText carbsEditText;
@@ -54,6 +54,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         foodNameEditText = findViewById(R.id.foodNameEditText);
+        grMlEditText = findViewById(R.id.grMlEditText);
         kcalEditText = findViewById(R.id.kcalEditText);
         proteinEditText = findViewById(R.id.proteinEditText);
         carbsEditText = findViewById(R.id.carbsEditText);
@@ -99,12 +100,14 @@ public class AddActivity extends AppCompatActivity {
                     Food food = new Food();
                     food.setId(UUID.randomUUID().toString());
                     food.setNombre(foodNameEditText.getText().toString());
+                    food.setTimeOfEating(spinner.getSelectedItem().toString());
+                    food.setGrMl(Integer.parseInt(grMlEditText.getText().toString()));
                     food.setKcal(Integer.parseInt(kcalEditText.getText().toString()));
                     food.setProtein(Integer.parseInt(proteinEditText.getText().toString()));
                     food.setCarbs(Integer.parseInt(carbsEditText.getText().toString()));
                     food.setFats(Integer.parseInt(fatsEditText.getText().toString()));
 
-                    databaseReference.child("User").child(mAuth.getUid()).child(spinner.getSelectedItem().toString()).child("Food").child(food.getId()).setValue(food);
+                    databaseReference.child("User").child(mAuth.getUid()).child(food.getTimeOfEating()).child("Food").child(food.getId()).setValue(food);
 
                     Toast.makeText(AddActivity.this, "Guardado", Toast.LENGTH_SHORT).show();
                     finish();

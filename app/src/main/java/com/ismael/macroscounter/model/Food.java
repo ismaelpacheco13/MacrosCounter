@@ -3,6 +3,8 @@ package com.ismael.macroscounter.model;
 public class Food {
     private String id;
     private String nombre;
+    private String timeOfEating;
+    private int grMl;
     private int kcal;
     private int protein;
     private int carbs;
@@ -14,6 +16,22 @@ public class Food {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public int getGrMl() {
+        return grMl;
+    }
+
+    public void setGrMl(int grMl) {
+        this.grMl = grMl;
+    }
+
+    public String getTimeOfEating() {
+        return timeOfEating;
+    }
+
+    public void setTimeOfEating(String timeOfEating) {
+        this.timeOfEating = timeOfEating;
     }
 
     public String getId() {

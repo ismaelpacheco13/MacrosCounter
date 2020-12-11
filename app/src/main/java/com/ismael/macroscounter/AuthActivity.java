@@ -104,7 +104,15 @@ public class AuthActivity extends AppCompatActivity {
 
     private void goToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("email", emailEditText.getText().toString());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mAuth.getCurrentUser() != null) {
+            goToHomeActivity();
+        }
     }
 }
