@@ -112,14 +112,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Eliminar" />
+                android:text="Eliminar"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="0dp"
+                android:layout_weight="0" />
 
             <Button
                 android:id="@+id/saveButtonEditP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Guardar" />
+                android:background="@color/colorPrimaryDark"
+                android:text="Guardar"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
     </LinearLayout>

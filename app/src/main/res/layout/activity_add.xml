@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addLayout"
-    android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundAppColor"
+    android:padding="12dp"
     tools:context=".AddActivity">
 
 
@@ -28,16 +28,16 @@
 
         <TextView
             android:id="@+id/textView"
+            style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tipo de comida"
-            style="@style/InputLabel"/>
+            android:text="Tipo de comida" />
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -108,6 +108,8 @@
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
             android:text="Guardar" />
 
     </LinearLayout>

@@ -49,14 +49,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/but_register" />
+                android:text="@string/but_register"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="0dp"
+                android:layout_weight="0" />
 
             <Button
                 android:id="@+id/logInButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/but_login" />
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/but_login"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

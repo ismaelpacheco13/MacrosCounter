@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#E76475</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#E8586B</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="backgroundAppColor">#E6E0E0</color>
     <color name="statusBarColor">#E8586B</color>
