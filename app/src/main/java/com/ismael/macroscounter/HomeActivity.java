@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ismael.macroscounter.model.Food;
+import com.ismael.macroscounter.model.Setting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +40,30 @@ public class HomeActivity extends AppCompatActivity {
     private AlertDialog.Builder madb;
     private AlertDialog.Builder madb2;
 
-    private TextView textView2;
+    private TextView kcalTextView;
+    private TextView proteinTextView;
+    private TextView carbsTextView;
+    private TextView fatsTextView;
+
+    private int actualKcal;
+    private int actualProtein;
+    private int actualCarbs;
+    private int actualFats;
+
+    private int actualBreakfastKcal;
+    private int actualBreakfastProtein;
+    private int actualBreakfastCarbs;
+    private int actualBreakfastFats;
+
+    private int actualLunchKcal;
+    private int actualLunchProtein;
+    private int actualLunchCarbs;
+    private int actualLunchFats;
+
+    private int actualDinnerKcal;
+    private int actualDinnerProtein;
+    private int actualDinnerCarbs;
+    private int actualDinnerFats;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -56,6 +80,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private Food foodSelected;
 
+    private Setting setting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +93,13 @@ public class HomeActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
-        textView2 = findViewById(R.id.textView2);
+        kcalTextView = findViewById(R.id.kcalTextView);
+        proteinTextView = findViewById(R.id.proteinTextView);
+        carbsTextView = findViewById(R.id.carbsTextView);
+        fatsTextView = findViewById(R.id.fatsTextView);
 
         getUserInfo();
+        getUserSetting();
 
         breakfastListV = findViewById(R.id.breakfastListV);
         lunchListV = findViewById(R.id.lunchListV);
@@ -113,10 +143,22 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 breakfastList.clear();
+                actualBreakfastKcal = 0;
+                actualBreakfastProtein = 0;
+                actualBreakfastCarbs = 0;
+                actualBreakfastFats = 0;
                 for (DataSnapshot objSnapshot : snapshot.getChildren()) {
                     Food food = objSnapshot.getValue(Food.class);
+                    actualBreakfastKcal += food.getKcal();
+                    actualBreakfastProtein += food.getProtein();
+                    actualBreakfastCarbs += food.getCarbs();
+                    actualBreakfastFats += food.getFats();
                     breakfastList.add(food);
                 }
+
+                getUserSetting();
+                updateEditTextSetting();
+
                 arrayAdapterFood = new ArrayAdapter<Food>(HomeActivity.this, android.R.layout.simple_list_item_1, breakfastList);
                 breakfastListV.setAdapter(arrayAdapterFood);
             }
@@ -131,10 +173,22 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 lunchList.clear();
+                actualLunchKcal = 0;
+                actualLunchProtein = 0;
+                actualLunchCarbs = 0;
+                actualLunchFats = 0;
                 for (DataSnapshot objSnapshot : snapshot.getChildren()) {
                     Food food = objSnapshot.getValue(Food.class);
+                    actualLunchKcal += food.getKcal();
+                    actualLunchProtein += food.getProtein();
+                    actualLunchCarbs += food.getCarbs();
+                    actualLunchFats += food.getFats();
                     lunchList.add(food);
                 }
+
+                getUserSetting();
+                updateEditTextSetting();
+
                 arrayAdapterFood = new ArrayAdapter<Food>(HomeActivity.this, android.R.layout.simple_list_item_1, lunchList);
                 lunchListV.setAdapter(arrayAdapterFood);
             }
@@ -149,10 +203,22 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dinnerList.clear();
+                actualDinnerKcal = 0;
+                actualDinnerProtein = 0;
+                actualDinnerCarbs = 0;
+                actualDinnerFats = 0;
                 for (DataSnapshot objSnapshot : snapshot.getChildren()) {
                     Food food = objSnapshot.getValue(Food.class);
+                    actualDinnerKcal += food.getKcal();
+                    actualDinnerProtein += food.getProtein();
+                    actualDinnerCarbs += food.getCarbs();
+                    actualDinnerFats += food.getFats();
                     dinnerList.add(food);
                 }
+
+                getUserSetting();
+                updateEditTextSetting();
+
                 arrayAdapterFood = new ArrayAdapter<Food>(HomeActivity.this, android.R.layout.simple_list_item_1, dinnerList);
                 dinnerListV.setAdapter(arrayAdapterFood);
             }
@@ -241,6 +307,11 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, AddActivity.class);
                 intent.putExtra("email", email);
                 startActivity(intent);
+                break;
+            case R.id.menu_setting:
+                Intent intentSetting = new Intent(this, SettingActivity.class);
+                startActivity(intentSetting);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -266,6 +337,53 @@ public class HomeActivity extends AppCompatActivity {
 
 
         });
+
+    }
+
+    private void getUserSetting() {
+        // Obtenemos el id del usuario con el que iniciamos sesión
+        String id = mAuth.getCurrentUser().getUid();
+        databaseReference.child("User").child(id).child("Setting").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    setting = snapshot.getValue(Setting.class);
+                    updateEditTextSetting();
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+        });
+
+    }
+
+    private void updateEditTextSetting() {
+        actualKcal = actualBreakfastKcal + actualLunchKcal + actualDinnerKcal;
+        actualProtein = actualBreakfastProtein + actualLunchProtein + actualDinnerProtein;
+        actualCarbs = actualBreakfastCarbs + actualLunchCarbs + actualDinnerCarbs;
+        actualFats = actualBreakfastFats + actualLunchFats + actualDinnerFats;
+        Log.i("setting", Integer.toString(actualKcal));
+
+        if (setting != null) {
+            kcalTextView.setText(actualKcal + " / " + (Integer.toString(setting.getKcal())));
+            proteinTextView.setText(actualProtein + " / " + (Integer.toString(setting.getProtein())));
+            carbsTextView.setText(actualCarbs + " / " + (Integer.toString(setting.getCarbs())));
+            fatsTextView.setText(actualFats + " / " + (Integer.toString(setting.getFats())));
+        } else {
+            kcalTextView.setText(actualKcal + " / 0");
+            proteinTextView.setText(actualProtein + " / 0");
+            carbsTextView.setText(actualCarbs + " / 0");
+            fatsTextView.setText(actualFats + " / 0");
+        }
+
+
 
     }
 
